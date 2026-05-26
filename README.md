@@ -24,7 +24,11 @@ Le dossier `docker/` contient une configuration prête à l'emploi pour l'enviro
 * **Orchestration intelligente** : Gestion de l'ordre de démarrage avec vérification de la santé des conteneurs (Healthcheck via Spring Boot Actuator).
 
 ### 🧹 Script de Nettoyage Docker
-Pour purger rapidement l'environnement Docker après un plantage ou pour libérer de l'espace disque, exécutez le script présent dans `docker/clean-docker/` :
+Pour purger rapidement l'environnement Docker après un plantage ou pour libérer de l'espace disque, exécutez le script présent dans `docker/clean-docker/`.
+
+Le script détecte automatiquement si des conteneurs sont actifs :
+- **Mode sécurisé** : Si des conteneurs tournent => nettoyage du cache BuildKit et images intermédiaires (données sauvegardées)
+- **Mode complet** : Si aucun conteneur actif => suppression totale des volumes, images et conteneurs arrêtés
 
 **Sur Linux/macOS :**
 ```bash
