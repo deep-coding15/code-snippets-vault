@@ -7,9 +7,11 @@ Bienvenue dans mon coffre-fort de code ! Ce dépôt centralise mes extraits de c
 ```text
 code-snippets-vault/
 ├── 📂 docker/
-│   ├── docker-compose.yml     # Orchestration de 2 services Spring Boot avec bases H2
-│   ├── Dockerfile             # Build multi-stage ultra-léger pour Java 21 (~140 Mo)
-│   └── clean-docker.sh        # Script de nettoyage complet du cache et des volumes
+│   ├── docker-compose.yml              # Orchestration de 2 services Spring Boot avec bases H2
+│   ├── Dockerfile                      # Build multi-stage ultra-léger pour Java 21 (~140 Mo)
+│   └── 📂 clean-docker/
+│       ├── clean-docker.bat            # Script nettoyage pour Windows
+│       └── clean-docker.sh             # Script nettoyage pour Linux/macOS
 └── README.md
 ```
 
@@ -22,14 +24,20 @@ Le dossier `docker/` contient une configuration prête à l'emploi pour l'enviro
 * **Orchestration intelligente** : Gestion de l'ordre de démarrage avec vérification de la santé des conteneurs (Healthcheck via Spring Boot Actuator).
 
 ### 🧹 Script de Nettoyage Docker
-Pour purger rapidement l'environnement Docker après un plantage ou pour libérer de l'espace disque, exécutez le script présent dans `docker/` :
+Pour purger rapidement l'environnement Docker après un plantage ou pour libérer de l'espace disque, exécutez le script présent dans `docker/clean-docker/` :
 
+**Sur Linux/macOS :**
 ```bash
-# Rendre le script exécutable (Linux/macOS)
-chmod +x docker/clean-docker.sh
+# Rendre le script exécutable
+chmod +x docker/clean-docker/clean-docker.sh
 
 # Lancer le nettoyage
-./docker/clean-docker.sh
+./docker/clean-docker/clean-docker.sh
+```
+
+**Sur Windows :**
+```batch
+docker\clean-docker\clean-docker.bat
 ```
 
 ## 🛠️ Comment utiliser ces Snippets dans votre IDE ?
