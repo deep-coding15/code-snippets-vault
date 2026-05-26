@@ -7,11 +7,13 @@ Bienvenue dans mon coffre-fort de code ! Ce dépôt centralise mes extraits de c
 ```text
 code-snippets-vault/
 ├── 📂 docker/
-│   ├── docker-compose.yml              # Orchestration de 2 services Spring Boot avec bases H2
-│   ├── Dockerfile                      # Build multi-stage ultra-léger pour Java 21 (~140 Mo)
+│   ├── docker-compose.yml                          # Orchestration de 2 services Spring Boot avec bases H2
+│   ├── Dockerfile                                  # Build multi-stage ultra-léger pour Java 21 (~140 Mo)
+│   ├── 📂 dockerfile/
+│   │   └── Dockerfile_spring_boot_distroless      # Dockerfile ultra-léger avec Google Distroless (sécurisé)
 │   └── 📂 clean-docker/
-│       ├── clean-docker.bat            # Script nettoyage pour Windows
-│       └── clean-docker.sh             # Script nettoyage pour Linux/macOS
+│       ├── clean-docker.bat                        # Script nettoyage pour Windows
+│       └── clean-docker.sh                         # Script nettoyage pour Linux/macOS
 └── README.md
 ```
 
@@ -19,9 +21,18 @@ code-snippets-vault/
 
 ### 🐳 Docker & Spring Boot
 Le dossier `docker/` contient une configuration prête à l'emploi pour l'environnement de développement :
-* **Images optimisées** : Utilisation du JRE BellSoft Alpine pour réduire la taille des conteneurs.
+* **Images optimisées** : Deux approches disponibles — Alpine (équilibré) et Distroless (ultra-sécurisé)
 * **Bases H2 indépendantes** : Chaque microservice possède son propre stockage persistant via les volumes Docker.
 * **Orchestration intelligente** : Gestion de l'ordre de démarrage avec vérification de la santé des conteneurs (Healthcheck via Spring Boot Actuator).
+
+#### 📄 Fichiers Dockerfile Disponibles
+- **Dockerfile** : Configuration standard multi-stage pour Java 21 (~140 Mo)
+- **Dockerfile_spring_boot_distroless** : Dockerfile ultra-léger avec Google Distroless :
+  - Base : `gcr.io/distroless/java21-debian12:nonroot` (minimal et sécurisé)
+  - Aucun shell, package manager ou outils inutiles
+  - Utilisateur non-root pré-configuré
+  - Empreinte de sécurité réduite (moins de vulnérabilités potentielles)
+  - Optimisation G1GC pour petits conteneurs
 
 ### 🧹 Script de Nettoyage Docker
 Pour purger rapidement l'environnement Docker après un plantage ou pour libérer de l'espace disque, exécutez le script présent dans `docker/clean-docker/`.
