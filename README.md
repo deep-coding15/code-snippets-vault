@@ -7,10 +7,10 @@ Bienvenue dans mon coffre-fort de code ! Ce dépôt centralise mes extraits de c
 ```text
 code-snippets-vault/
 ├── 📂 docker/
-│   ├── docker-compose.yml                          # Orchestration de 2 services Spring Boot avec bases H2
-│   ├── Dockerfile                                  # Build multi-stage ultra-léger pour Java 21 (~140 Mo)
+│   ├── 📂 docker-compose/
+│   │   └── Dockerfile_spring_boot_2_services_h2-database.yml  # Docker Compose pour 2 services Spring Boot + H2
 │   ├── 📂 dockerfile/
-│   │   └── Dockerfile_spring_boot_distroless      # Dockerfile ultra-léger avec Google Distroless (sécurisé)
+│   │   └── Dockerfile_spring_boot_distroless                  # Dockerfile ultra-léger avec Google Distroless (sécurisé)
 │   └── 📂 clean-docker/
 │       ├── clean-docker.bat                        # Script nettoyage pour Windows
 │       └── clean-docker.sh                         # Script nettoyage pour Linux/macOS
@@ -25,8 +25,8 @@ Le dossier `docker/` contient une configuration prête à l'emploi pour l'enviro
 * **Bases H2 indépendantes** : Chaque microservice possède son propre stockage persistant via les volumes Docker.
 * **Orchestration intelligente** : Gestion de l'ordre de démarrage avec vérification de la santé des conteneurs (Healthcheck via Spring Boot Actuator).
 
-#### 📄 Fichiers Dockerfile Disponibles
-- **Dockerfile** : Configuration standard multi-stage pour Java 21 (~140 Mo)
+#### 📄 Fichiers de Configuration Disponibles
+- **Dockerfile_spring_boot_2_services_h2-database.yml** : Docker Compose avec orchestration de 2 services Spring Boot et bases H2 indépendantes
 - **Dockerfile_spring_boot_distroless** : Dockerfile ultra-léger avec Google Distroless :
   - Base : `gcr.io/distroless/java21-debian12:nonroot` (minimal et sécurisé)
   - Aucun shell, package manager ou outils inutiles

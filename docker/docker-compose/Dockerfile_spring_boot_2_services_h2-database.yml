@@ -1,0 +1,55 @@
+services:
+  service-a:
+    build:
+      context: ./service-a
+      dockerfile: Dockerfile
+    container_name: spring-service-a
+    ports:
+      - "8081:8081"
+    environment:
+      - SERVER_PORT=8081
+      - SPRING_PROFILES_ACTIVE=docker
+      - SERVICE_B_URL=http://service-b:8082
+    volumes:
+      - h2_service-a:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 30s
+    networks:
+      - spring-network
+
+  service-b:
+    build:
+      context: ./service-b
+      dockerfile: Dockerfile
+    container_name: spring-service-b
+    ports:
+      - "8082:8082"
+    environment:
+      - SERVER_PORT=8082
+      - SPRING_PROFILES_ACTIVE=docker
+      - SERVICE_A_URL=http://service-a:8081
+    volumes:
+      - h2_service-b:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 30s
+    depends_on:
+      service-a:
+        condition: service_healthy
+    networks:
+      - spring-network
+
+volumes:
+  h2_service-a:
+  h2_service-b:
+
+networks:
+  spring-network:
+    driver: bridge
