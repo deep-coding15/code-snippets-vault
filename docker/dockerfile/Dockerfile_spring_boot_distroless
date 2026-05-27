@@ -1,0 +1,29 @@
+
+# --- Étape 1 : Compilation de l'application ---
+FROM maven:3.9.6-eclipse-temurin-21-alpine AS build
+WORKDIR /app
+
+# Copie du fichier de configuration Maven pour mettre en cache les dépendances
+COPY pom.xml .
+RUN mvn dependency:go-offline -B \
+    -Dmaven.wagon.httpconnectionManager.ttlSeconds=25 \
+    -Dmaven.wagon.http.retryHandler.count=3
+
+# Copie du code source et construction du fichier JAR
+COPY src ./src
+RUN mvn clean package -DskipTests -Dmaven.test.skip=true
+
+
+# --- Étape 2 : Environnement d'exécution ultra-léger (Distroless) ---
+FROM gcr.io/distroless/java21-debian12:nonroot
+WORKDIR /app
+
+# Copie du fichier JAR généré à l'étape précédente
+# Distroless exécute déjà en tant qu'utilisateur non-root
+COPY --from=build /app/target/*.jar app.jar
+
+# Exposition du port par défaut de Spring Boot
+EXPOSE 8080
+
+# Optimisation la libération de la mémoire RAM au sein des petits conteneurs docker (JVM pour les conteneurs)
+ENTRYPOINT ["java", "-XX:+UseG1GC", "-jar", "app.jar"]
